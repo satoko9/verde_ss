@@ -1,6 +1,8 @@
 #include <iostream>
 #include <stdio.h>
 
+using namespace std;
+
 class Game{
     int tend;
     int result;
@@ -62,6 +64,17 @@ int main()
         }
         printf("\n");
     }
+
+    int today = 0;
+    int &tomorrow = today;
+
+    today = 919;
+    cout <<"today is..." << today << endl;
+    cout << tomorrow << endl;
+
+    tomorrow = 920;
+    cout << "tomorrow is..." << today << endl;
+    cout << tomorrow << endl;
 
     return 0;
 }
