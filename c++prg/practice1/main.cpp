@@ -76,5 +76,22 @@ int main()
     cout << "tomorrow is..." << today << endl;
     cout << tomorrow << endl;
 
+    char name[20];
+    std::cout << "Please write your name.\n";
+    std::cin >> name;
+    std::cout << "Hello," << name << ". Welcome to my computer!\n";
+
+    int old;
+    std::cout << "How old are you?\n";
+    std::cin >> old;
+
+    if(old >= 20){
+        std::cout << "you are adult.\n";
+    }else{
+        std::cout << old << "? You are too young.\n";
+    }
+
+
+
     return 0;
 }
