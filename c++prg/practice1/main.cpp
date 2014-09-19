@@ -51,5 +51,17 @@ int main()
         printf("%d card is staying. you are cleared\n",game.Result());
     }
 
+    int n = 5;
+
+    for(int i=1; i<=n; i++){
+        for(int x=n; x>=i; x--){
+            printf(" ");
+        }
+        for(int y=1; y<=2*i-1; y++){
+            printf("A");
+        }
+        printf("\n");
+    }
+
     return 0;
 }
