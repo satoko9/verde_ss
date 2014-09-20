@@ -87,9 +87,12 @@ int main()
 
     if(old >= 20){
         std::cout << "you are adult.\n";
-    }else{
+    }else if(old > 0){
         std::cout << old << "? You are too young.\n";
+    }else{
+        std::cout << "You failed.\n";
     }
+
 
 
 
