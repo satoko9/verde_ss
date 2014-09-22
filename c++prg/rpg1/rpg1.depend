@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1411365039 source:c:\users\user\desktop\c++prg\rpg1\main.cpp
+	<iostream>
+	<stdio.h>
+	<string.h>
+
