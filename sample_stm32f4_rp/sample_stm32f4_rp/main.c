@@ -50,9 +50,6 @@ typedef struct{
 
 int g_timer;
 
-float g_degree = 0;
-float g_radian = 0;
-
 void Calculate_Information_3tire(Robot_Information	*robot);
 void Move(signed int left, signed int right, signed int back);
 void Motor_PORT(void);
@@ -85,9 +82,9 @@ void Calculate_Information_3tire(Robot_Information	*robot)
 
 
 	//車体を真上から見て、車体が反時計回転する方向に動くときのエンコーダカウントを正とする
-	encoder_count_now_a = read_value('a');		/*前エンコーダ読み取り*/
-	encoder_count_now_b = read_value('b');		/*左エンコーダ読み取り*/
-	encoder_count_now_c = read_value('c');		/*右エンコーダ読み取り*/
+	encoder_count_now_a = ENCODER_A;		/*前エンコーダ読み取り*/
+	encoder_count_now_b = ENCODER_B;		/*左エンコーダ読み取り*/
+	encoder_count_now_c = ENCODER_C;		/*右エンコーダ読み取り*/
 
 	//各エンコーダの微小移動距離を算出
 	d_distance_a = (encoder_count_now_a - encoder_count_old_a) * (ENCODER_CIRCUMFERENCE_A / PULSE);
@@ -120,12 +117,12 @@ void Calculate_Information_3tire(Robot_Information	*robot)
 	}
 
 	//各エンコーダの微小移動から求まるｘ、y方向の移動量を計算して2倍する
-	movement_a_x += 2.0 * (fabs(d_distance_a) * cos(deg_rad(g_degree + 90.0 + reverse_degree_a)));
-	movement_a_y += 2.0 * (fabs(d_distance_a) * sin(deg_rad(g_degree + 90.0 + reverse_degree_a)));
-	movement_b_x += 2.0 * (fabs(d_distance_b) * cos(deg_rad(g_degree - 150.0 + reverse_degree_b)));
-	movement_b_y += 2.0 * (fabs(d_distance_b) * sin(deg_rad(g_degree - 150.0 + reverse_degree_b)));
-	movement_c_x += 2.0 * (fabs(d_distance_c) * cos(deg_rad(g_degree - 30.0 + reverse_degree_c)));
-	movement_c_y += 2.0 * (fabs(d_distance_c) * sin(deg_rad(g_degree - 30.0 + reverse_degree_c)));
+	movement_a_x += 2.0 * (fabs(d_distance_a) * cos(deg_rad(robot -> degree + 90.0 + reverse_degree_a)));
+	movement_a_y += 2.0 * (fabs(d_distance_a) * sin(deg_rad(robot -> degree + 90.0 + reverse_degree_a)));
+	movement_b_x += 2.0 * (fabs(d_distance_b) * cos(deg_rad(robot -> degree - 150.0 + reverse_degree_b)));
+	movement_b_y += 2.0 * (fabs(d_distance_b) * sin(deg_rad(robot -> degree - 150.0 + reverse_degree_b)));
+	movement_c_x += 2.0 * (fabs(d_distance_c) * cos(deg_rad(robot -> degree - 30.0 + reverse_degree_c)));
+	movement_c_y += 2.0 * (fabs(d_distance_c) * sin(deg_rad(robot -> degree - 30.0 + reverse_degree_c)));
 
 	//車体中心座標を算出
 	robot->center_x = (movement_a_x + movement_b_x + movement_c_x) / 3.0;
@@ -263,11 +260,11 @@ void Move(signed int left, signed int right, signed int back){
 *	  作成者 ： 須貝聡子
 *	  作成日 ： 2014/06/26
 ******************************************************************************/
-float rad_deg(float g_radian)
+float rad_deg(float radian)
 {
-//	double degree;
-	g_degree = (180 * g_radian) / PAI;
-	return g_degree;
+	double degree;
+	degree = (180 * radian) / PAI;
+	return degree;
 }
 
 /******************************************************************************
@@ -278,11 +275,11 @@ float rad_deg(float g_radian)
 *	  作成者 ： 須貝聡子
 *	  作成日 ： 2014/06/26
 ******************************************************************************/
-float deg_rad(float g_degree)
+float deg_rad(float degree)
 {
-//	double radian;
-	g_radian = (PAI * g_degree) / 180;
-	return g_radian;
+	double radian;
+	radian = (PAI * degree) / 180;
+	return radian;
 }
 
 /******************************************************************************
@@ -377,14 +374,15 @@ int main(void)
 //	Init_PWM(TIM4, GPIOD, GPIO_Pin_12 | GPIO_Pin_13 | GPIO_Pin_14 | GPIO_Pin_15, 1000);
 //	Init_encoder(TIM2, GPIOA, GPIO_Pin_0 | GPIO_Pin_1);
 
-//	Init_ADC1(GPIOA, GPIO_Pin_5);
+	Init_ADC1(GPIOA, GPIO_Pin_5);
 	Init_USART(USART3, 115200, GPIOD, GPIO_Pin_8, GPIOD, GPIO_Pin_9);
 	Init_usb();
-//	Init_port(GPIO_Mode_OUT, GPIOA, GPIO_Pin_15, GPIO_PuPd_UP, GPIO_OType_PP);		//Highにするとエンコーダ値をリセットできる
-//	Init_port(GPIO_Mode_IN, GPIOC, GPIO_Pin_13, GPIO_PuPd_DOWN, GPIO_OType_PP);		//スタートスイッチ
-//	Init_port(GPIO_Mode_OUT, GPIOE, GPIO_Pin_1, GPIO_PuPd_UP, GPIO_OType_PP);		//ブザー
-//	Motor_PORT();
-//	Calculate_Information_3tire(Robot_Information	*robot);		//radian, degree, c_x, c_y
+	Init_port(GPIO_Mode_OUT, GPIOA, GPIO_Pin_15, GPIO_PuPd_UP, GPIO_OType_PP);		//Highにするとエンコーダ値をリセットできる
+	Init_port(GPIO_Mode_IN, GPIOC, GPIO_Pin_13, GPIO_PuPd_DOWN, GPIO_OType_PP);		//スタートスイッチ
+	Init_port(GPIO_Mode_OUT, GPIOE, GPIO_Pin_1, GPIO_PuPd_UP, GPIO_OType_PP);		//ブザー
+	Motor_PORT();
+
+	Robot_Information robot;
 
 //	signed int left = 0;
 //	signed int right = 0;
@@ -392,33 +390,48 @@ int main(void)
 
 //	int count = 0;
 
-	float encoder_a = 0;
-	float encoder_b = 0;
-	float encoder_c = 0;
+	int n = 1;
+	int w = 0;
 
-//	int n = 1;
-
-//		while(n){
-//			if(SWITCH == 1){
-//				n = 0;
-//			}
-//		}
+		while(n){
+			if(SWITCH == 1){
+				n = 0;
+			}
+		}
 		while(1){
 			if(g_timer >= 5){
 				g_timer = 0;
 
+				Calculate_Information_3tire(&robot);
 //				GPIO_ResetBits(GPIOA,GPIO_Pin_15);
 
-//				write_value('a',10);
+				if(w >= 5){
+					w = 0;
+				}else{
+					w++;
+				}
 
-				encoder_a = read_value('a');
-				encoder_b = read_value('b');
-				encoder_c = read_value('c');
+				switch (w){
+				case 0:
+					f_print(USB_PC, "radian", robot.radian);			//ラジアン(角度)
+					break;
+				case 1:
+					f_print(USB_PC, "degree", robot.degree);			//ディグリー(角度)
+					break;
+				case 2:
+					f_print(USB_PC, "center_x", robot.center_x);		//x座標
+					break;
+				case 3:
+					f_print(USB_PC, "center_y", robot.center_y);		//y座標
+					break;
+				case 4:
+					put_enter(USB_PC);
+					break;
+				}
 
-				f_print(USB_PC, "encoder_a", encoder_a);
-				f_print(USB_PC, "encoder_b", encoder_b);
-				f_print(USB_PC, "encoder_c", encoder_c);
-				put_enter(USB_PC);
+				//f_print(USB_PC, "encoder_a", ENCODER_A);
+				//f_print(USB_PC, "encoder_b", ENCODER_B);
+				//f_print(USB_PC, "encoder_c", ENCODER_C);
 
 				//USB通信テスト
 				//usb_put_char(USART_ReceiveData(USART3));
