@@ -58,7 +58,6 @@ void ColorfulRingOfDeath(void)
 	}
 }
 
-
 /*******************************************************************************
 * Function Name  : NMI_Handler
 * Description    : This function handles NMI exception.
