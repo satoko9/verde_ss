@@ -9,7 +9,7 @@
 #include <spi4teensy3.h>
 #endif
 
-#define SHARP '#'
+#define SHARP '8'
 #define ID 0x0000
 
 USB Usb;
@@ -43,14 +43,22 @@ void left_stick(){
       }
     }
     
+    left[1] = left_x;
+    
     if(y != PS3.getAnalogHat(LeftHatY)) {
       y = PS3.getAnalogHat(LeftHatY);
       if(PS3.getAnalogHat(LeftHatY) > 0){
         left_y = PS3.getAnalogHat(LeftHatY);
+        //Serial.print(PS3.getAnalogHat(LeftHatY));
+        //Serial.print("\n");
       }else{
         left_y = 0;
+        //Serial.print("0\n");
       }
     }
+    
+    left[4] = left_y;
+    
      CAN0.sendMsgBuf(ID, 0, 8, left);              
 }
 
@@ -67,10 +75,14 @@ void right_stick(){
       x = PS3.getAnalogHat(RightHatX);
       if(PS3.getAnalogHat(RightHatX) > 0){
         right_x = PS3.getAnalogHat(RightHatX);
+//        Serial.print(PS3.getAnalogHat(RightHatX));
+//        Serial.print("\n");
       }else{
         right_x = 0;
       }
     }
+    
+    right[1] = right_x;
     
     if(y != PS3.getAnalogHat(RightHatY)){
       y = PS3.getAnalogHat(RightHatY);
@@ -80,6 +92,11 @@ void right_stick(){
         right_y = 0;
       }
     }
+    
+    right[4] = right_y;
+    
+        Serial.print(PS3.getAnalogHat(RightHatX));
+        Serial.print("\n");
      CAN0.sendMsgBuf(ID, 0, 8, right);              
 }
 
@@ -101,6 +118,8 @@ void L1_R1(){
         left1 = 0;
       }
     }
+    
+    l1_r1[1] = left1;
      
     if (r != PS3.getAnalogButton(R1)) {
       r = PS3.getAnalogButton(R1);
@@ -109,7 +128,10 @@ void L1_R1(){
       }else{
         right1 = 0;
       }   
-    }   
+    }
+ 
+     l1_r1[4] = right1;
+        
      CAN0.sendMsgBuf(ID, 0, 8, l1_r1);              
 }
 
@@ -132,6 +154,8 @@ void L2_R2(){
     }
     }
 
+     l2_r2[1] = left2;
+
     if (r != PS3.getAnalogButton(R2)) {
      r = PS3.getAnalogButton(R2);
      if (PS3.getAnalogButton(R2) > 0){
@@ -139,7 +163,10 @@ void L2_R2(){
      }else{
        right2 = 0;
      }
-    }    
+    } 
+    
+     l2_r2[4] = right2;
+     
      CAN0.sendMsgBuf(ID, 0, 8, l2_r2);              
 }
 
@@ -158,6 +185,9 @@ void Triangle(){
         tri = 0;
       }
     }
+    
+     triangle[1] = tri;
+    
      CAN0.sendMsgBuf(ID, 0, 8, triangle);              
 }
 
@@ -176,6 +206,9 @@ void Circle(){
         cir = 0;
       }
     }
+    
+     circle[1] = cir;
+     
      CAN0.sendMsgBuf(ID, 0, 8, circle);              
 }
 
@@ -193,6 +226,9 @@ void Cross(){
         cro = 0;
       }
     }
+    
+     cross[1] = cro;
+     
      CAN0.sendMsgBuf(ID, 0, 8, cross);              
 }
 
@@ -210,6 +246,9 @@ void Square(){
         squ = 0;
       }
     }
+    
+     square[1] = squ;
+     
      CAN0.sendMsgBuf(ID, 0, 8, square);              
 }
 
@@ -227,6 +266,9 @@ void Up(){
         up = 0;
       }
     }
+    
+     up_key[1] = up;
+     
      CAN0.sendMsgBuf(ID, 0, 8, up_key);              
 }
 
@@ -244,6 +286,9 @@ void Right(){
         rig = 0;
       }
     }
+    
+     right_key[1] = rig;
+     
      CAN0.sendMsgBuf(ID, 0, 8, right_key);
 }
 
@@ -261,6 +306,9 @@ void Down(){
         dow = 0;
       }
     }
+    
+     down_key[1] = dow;
+     
      CAN0.sendMsgBuf(ID, 0, 8, down_key);
 }
 
@@ -278,6 +326,9 @@ void Left(){
         lef = 0;
       }
     }
+    
+     left_key[1] = lef;
+     
      CAN0.sendMsgBuf(ID, 0, 8, left_key);
 }
 
@@ -295,6 +346,9 @@ void Select(){
         sel = 0;
       }
     }
+    
+     select[1] = sel;
+     
      CAN0.sendMsgBuf(ID, 0, 8, select);
 }
 
@@ -312,6 +366,9 @@ void Start(){
         sta = 0;
       }
     }
+    
+     start[1] = sta;
+     
      CAN0.sendMsgBuf(ID, 0, 8, start);
 }
 
@@ -325,6 +382,9 @@ void pitch_roll(){
     
      pit = PS3.getAngle(Pitch);
      rol = PS3.getAngle(Roll);
+     
+     pit_rol[1] = pit;
+     pit_rol[4] = rol;
      
      CAN0.sendMsgBuf(ID, 0, 8, pit_rol);  
 }
@@ -345,11 +405,14 @@ void pitch_roll(){
         ps3 = 0;
       }
     }
+    
+     ps_botton[1] = ps3;
+    
      CAN0.sendMsgBuf(0x0000, 0, 8, ps_botton);
 }*/
   
 
-void all_button(){
+/*void all_button(){
   if (PS3.PS3Connected) {  
     right_stick();
     left_stick();
@@ -372,7 +435,7 @@ void all_button(){
     digitalWrite(13,LOW);
   }
 }
-
+*/
 void setup() {
   Serial.begin(115200);
 
@@ -392,16 +455,35 @@ void setup() {
   CAN0.init_Filt(0,0,0x0111);
   CAN0.init_Filt(2,0,0x0112);
 
-  MsTimer2::set(10, all_button); // 500ms period
-  MsTimer2::start();
+//  MsTimer2::set(10, all_button); // 500ms period
+//  MsTimer2::start();
   digitalWrite(13,LOW);
 }
 
 void loop() {
   Usb.Task();
+  if (PS3.PS3Connected) {  
+    right_stick();
+    left_stick();
+    Triangle();
+    Circle();
+    Cross();
+    Square();
+    Up();
+    Right();
+    Down();
+    Left();
+    L1_R1();
+    L2_R2();
+    Select();
+    Start();
+    pitch_roll();
   if (PS3.getButtonPress(PS)) {
-      //Serial.print("l1#");
       PS3.disconnect();
       PS3.setLedOff();
+  }
+    digitalWrite(13,HIGH);
+  }else{
+    digitalWrite(13,LOW);
   }
 }
