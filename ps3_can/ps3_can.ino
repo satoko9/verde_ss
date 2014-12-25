@@ -32,16 +32,16 @@ enum {
 	left_y_ch,
 	right_x_ch,
 	right_y_ch,
-	up_ch,
-	right_ch,
-	down_ch,
-	left_ch,
+	l1_ch,l2_ch,
+	r1_ch,r2_ch,
 	triangle_ch,
 	circle_ch,
 	cross_ch,
 	square_ch,
-	l1_ch,l2_ch,
-	r1_ch,r2_ch,
+	up_ch,
+	down_ch,
+	right_ch,
+	left_ch,
         pitch_ch,
         roll_ch
 }Mnemonic;
@@ -57,10 +57,10 @@ void Left_x(){
       before_left_x = PS3.getAnalogHat(LeftHatX);
       if (PS3.getAnalogHat(LeftHatX) > 0){
         left_x_value = PS3.getAnalogHat(LeftHatX);
-        left_stick_x[1] = left_x_value;
       }else{
         left_x_value = 0;
       }
+        left_stick_x[1] = left_x_value;
         CAN0.sendMsgBuf(ID, 0, 3, left_stick_x);
     }    
 }
@@ -76,13 +76,13 @@ void Left_y(){
       before_left_y = PS3.getAnalogHat(LeftHatY);
       if(PS3.getAnalogHat(LeftHatY) > 0){
         left_y_value = PS3.getAnalogHat(LeftHatY);
-        left_stick_y[1] = left_y_value;
         //Serial.print(PS3.getAnalogHat(LeftHatY));
         //Serial.print("\n");
       }else{
         left_y_value = 0;
         //Serial.print("0\n");
       }
+        left_stick_y[1] = left_y_value;
         CAN0.sendMsgBuf(ID, 0, 3, left_stick_y);              
     }    
 }
@@ -98,12 +98,12 @@ void Right_x(){
       before_right_x = PS3.getAnalogHat(RightHatX);
       if(PS3.getAnalogHat(RightHatX) > 0){
         right_x_value = PS3.getAnalogHat(RightHatX);
-        right_stick_x[1] = right_x_value;
 //        Serial.print(PS3.getAnalogHat(RightHatX));
 //        Serial.print("\n");
       }else{
         right_x_value = 0;
       }
+        right_stick_x[1] = right_x_value;
         CAN0.sendMsgBuf(ID, 0, 3, right_stick_x);       
     }
 }
@@ -119,10 +119,10 @@ void Right_y(){
       before_right_y = PS3.getAnalogHat(RightHatY);
       if(PS3.getAnalogHat(RightHatY) > 0){
         right_y_value = PS3.getAnalogHat(RightHatY);
-        right_stick_y[1] = right_y_value;
       }else{
         right_y_value = 0;
       }
+        right_stick_y[1] = right_y_value;
         CAN0.sendMsgBuf(ID, 0, 3, right_stick_y);       
     }
 }
@@ -137,10 +137,10 @@ void Up(){
       before_up = PS3.getAnalogButton(UP);
       if(PS3.getAnalogButton(UP) > 0){
         up_value = PS3.getAnalogButton(UP);
-        up_button[1] = up_value;     
       }else{
         up_value = 0;
       }
+        up_button[1] = up_value;     
         CAN0.sendMsgBuf(ID, 0, 3, up_button);              
     }
 }
@@ -155,10 +155,10 @@ void Right(){
       before_right = PS3.getAnalogButton(RIGHT);
       if(PS3.getAnalogButton(RIGHT) > 0){
         right_value = PS3.getAnalogButton(RIGHT);
-        right_button[1] = right_value;     
       }else{
         right_value = 0;
       }
+        right_button[1] = right_value;     
         CAN0.sendMsgBuf(ID, 0, 3, right_button);
     }
 }
@@ -173,10 +173,10 @@ void Down(){
       before_down = PS3.getAnalogButton(DOWN);
       if(PS3.getAnalogButton(DOWN) > 0){
         down_value = PS3.getAnalogButton(DOWN);
-        down_button[1] = down_value;
       }else{
         down_value = 0;
       }
+        down_button[1] = down_value;
         CAN0.sendMsgBuf(ID, 0, 3, down_button);
     }     
 }
@@ -191,10 +191,10 @@ void Left(){
       before_left = PS3.getAnalogButton(LEFT);
       if(PS3.getAnalogButton(LEFT) > 0){
         left_value = PS3.getAnalogButton(LEFT);
-        left_button[1] = left_value;     
       }else{
         left_value = 0;
       }
+        left_button[1] = left_value;     
         CAN0.sendMsgBuf(ID, 0, 3, left_button);
     }
 }
@@ -209,10 +209,10 @@ void Triangle(){
       before_triangle = PS3.getAnalogButton(TRIANGLE);
       if(PS3.getAnalogButton(TRIANGLE) > 0){
         triangle_value = PS3.getAnalogButton(TRIANGLE);
-        triangle_button[1] = triangle_value;    
       }else{
         triangle_value = 0;
       }
+        triangle_button[1] = triangle_value;    
         CAN0.sendMsgBuf(ID, 0, 3, triangle_button);
     }
 }
@@ -227,10 +227,10 @@ void Circle(){
       before_circle = PS3.getAnalogButton(CIRCLE);
       if(PS3.getAnalogButton(CIRCLE) > 0){
         circle_value = PS3.getAnalogButton(CIRCLE);
-        circle_button[1] = circle_value;     
       }else{
         circle_value = 0;
       }
+        circle_button[1] = circle_value;     
         CAN0.sendMsgBuf(ID, 0, 3, circle_button);              
     }
 }
@@ -245,10 +245,10 @@ void Cross(){
       before_cross = PS3.getAnalogButton(CROSS);
       if(PS3.getAnalogButton(CROSS) > 0){
         cross_value = PS3.getAnalogButton(CROSS);
-        cross_button[1] = cross_value;     
       }else{
         cross_value = 0;
       }
+        cross_button[1] = cross_value;     
         CAN0.sendMsgBuf(ID, 0, 3, cross_button);              
     }
 }
@@ -263,10 +263,10 @@ void Square(){
       before_square = PS3.getAnalogButton(SQUARE);
       if(PS3.getAnalogButton(SQUARE) > 0){
         square_value = PS3.getAnalogButton(SQUARE);
-        square_button[1] = square_value;     
       }else{
         square_value = 0;
       }
+        square_button[1] = square_value;     
         CAN0.sendMsgBuf(ID, 0, 3, square_button);              
     }
 }
@@ -282,10 +282,10 @@ void Left1(){
       before_l1 = PS3.getAnalogButton(L1);
       if(PS3.getAnalogButton(L1) > 0){
         l1_value = PS3.getAnalogButton(L1);
-        l1_button[1] = l1_value;     
       }else{
         l1_value = 0;
       }
+        l1_button[1] = l1_value;     
         CAN0.sendMsgBuf(ID, 0, 3, l1_button);              
     }    
 }
@@ -300,10 +300,10 @@ void Right1(){
       before_r1 = PS3.getAnalogButton(R1);
       if(PS3.getAnalogButton(R1) > 0){
         r1_value = PS3.getAnalogButton(R1);
-        r1_button[1] = r1_value;
       }else{
         r1_value = 0;
       }   
+        r1_button[1] = r1_value;
         CAN0.sendMsgBuf(ID, 0, 3, r1_button);
     }
 }
@@ -319,10 +319,10 @@ void Left2(){
      before_l2 = PS3.getAnalogButton(L2);
      if (PS3.getAnalogButton(L2) > 0){
        l2_value = PS3.getAnalogButton(L2);
-       l2_button[1] = l2_value;
      }else{
        l2_value = 0;
      }
+       l2_button[1] = l2_value;
        CAN0.sendMsgBuf(ID, 0, 3, l2_button);
     }
 }
@@ -337,10 +337,10 @@ void Right2(){
      before_r2 = PS3.getAnalogButton(R2);
      if (PS3.getAnalogButton(R2) > 0){
        r2_value = PS3.getAnalogButton(R2);
-       r2_button[1] = r2_value;
      }else{
        r2_value = 0;
      }
+       r2_button[1] = r2_value;
        CAN0.sendMsgBuf(ID, 0, 3, r2_button);              
     } 
 }
@@ -355,10 +355,10 @@ void Select(){
       before_select = PS3.getButtonPress(SELECT);
       if(PS3.getButtonPress(SELECT) > 0){  
         select_value = 1;
-        select_button[1] = select_value;     
       }else{
         select_value = 0;
       }
+        select_button[1] = select_value;     
         CAN0.sendMsgBuf(ID, 0, 3, select_button);
     }
 }
@@ -373,10 +373,10 @@ void Start(){
       before_start = PS3.getButtonPress(START);
       if(PS3.getButtonPress(START)){
         start_value = 1;
-        start_button[1] = start_value;
       }else{
         start_value = 0;
       }
+        start_button[1] = start_value;
         CAN0.sendMsgBuf(ID, 0, 3, start_button);
     }
 }
@@ -448,8 +448,8 @@ void loop() {
     Right2();
     Select();
     Start();
-    pitch();
-    roll();
+//    pitch();
+//    roll();
   if (PS3.getButtonPress(PS)) {
       PS3.disconnect();
       PS3.setLedOff();
