@@ -27,6 +27,8 @@ long unsigned int rxId;
 unsigned char len = 0;
 unsigned char rxBuf[8];
 
+unsigned char send_value[8] = {0};
+
 MCP_CAN CAN0(4);                            // Set CS 
 
 enum {
@@ -51,11 +53,9 @@ enum {
 }Mnemonic;
 
 //左スティックx
-void Left_x(){
+void Left_x(unsigned char* data_value){
     static int before_left_x = 0;
     int left_x_value = 0;
-    
-    unsigned char left_stick_x[3] = {left_x_ch,left_x_value,SHARP};
     
     if (before_left_x != PS3.getAnalogHat(LeftHatX)) {
       before_left_x = PS3.getAnalogHat(LeftHatX);
@@ -64,17 +64,14 @@ void Left_x(){
       }else{
         left_x_value = 0;
       }
-        left_stick_x[1] = left_x_value;
-        CAN0.sendMsgBuf(ID, 0, 3, left_stick_x);
+        data_value[1] = left_x_value;
     }    
 }
 
 //左スティックy
-void Left_y(){
+void Left_y(unsigned char* data_value){
     static int before_left_y = 0;
     int left_y_value = 0;
-    
-    unsigned char left_stick_y[3] = {left_y_ch,left_y_value,SHARP};
     
     if(before_left_y != PS3.getAnalogHat(LeftHatY)) {
       before_left_y = PS3.getAnalogHat(LeftHatY);
@@ -86,16 +83,14 @@ void Left_y(){
         left_y_value = 0;
         //Serial.print("0\n");
       }
-        left_stick_y[1] = left_y_value;
-        CAN0.sendMsgBuf(ID, 0, 3, left_stick_y);              
+        data_value[1] = left_y_value;
     }    
 }
+
 //右スティックx
-void Right_x(){
+void Right_x(unsigned char* data_value){
     static int before_right_x = 0;
     int right_x_value = 0;
-    
-    unsigned char right_stick_x[3] = {right_x_ch,right_x_value,SHARP};
   
     if (before_right_x != PS3.getAnalogHat(RightHatX)) {
       before_right_x = PS3.getAnalogHat(RightHatX);
@@ -106,17 +101,14 @@ void Right_x(){
       }else{
         right_x_value = 0;
       }
-        right_stick_x[1] = right_x_value;
-        CAN0.sendMsgBuf(ID, 0, 3, right_stick_x);       
+        data_value[1] = right_x_value;
     }
 }
 
 //右スティックy
-void Right_y(){
+void Right_y(unsigned char* data_value){
     static int before_right_y = 0;
     int right_y_value = 0;
-    
-    unsigned char right_stick_y[3] = {right_y_ch,right_y_value,SHARP};
     
     if(before_right_y != PS3.getAnalogHat(RightHatY)){
       before_right_y = PS3.getAnalogHat(RightHatY);
@@ -125,16 +117,13 @@ void Right_y(){
       }else{
         right_y_value = 0;
       }
-        right_stick_y[1] = right_y_value;
-        CAN0.sendMsgBuf(ID, 0, 3, right_stick_y);       
+        data_value[1] = right_y_value;
     }
 }
 
-void Up(){
+void Up(unsigned char* data_value){
   static int before_up = 0;
   int up_value = 0;
-
-  unsigned char up_button[3] = {up_ch,up_value,SHARP};   
   
     if (before_up != PS3.getAnalogButton(UP)) {
       before_up = PS3.getAnalogButton(UP);
@@ -143,16 +132,13 @@ void Up(){
       }else{
         up_value = 0;
       }
-        up_button[1] = up_value;     
-        CAN0.sendMsgBuf(ID, 0, 3, up_button);              
+        data_value[1] = up_value;     
     }
 }
 
-void Right(){
+void Right(unsigned char* data_value){
   static int before_right = 0;
   int right_value = 0;
-  
-  unsigned char right_button[3] = {right_ch,right_value,SHARP};   
   
     if (before_right != PS3.getAnalogButton(RIGHT)) {
       before_right = PS3.getAnalogButton(RIGHT);
@@ -161,16 +147,13 @@ void Right(){
       }else{
         right_value = 0;
       }
-        right_button[1] = right_value;     
-        CAN0.sendMsgBuf(ID, 0, 3, right_button);
+        data_value[1] = right_value;     
     }
 }
 
-void Down(){
+void Down(unsigned char* data_value){
   static int before_down = 0;
   int down_value = 0;
-  
-  unsigned char down_button[3] = {down_ch,down_value,SHARP};   
   
     if (before_down != PS3.getAnalogButton(DOWN)) {
       before_down = PS3.getAnalogButton(DOWN);
@@ -179,16 +162,13 @@ void Down(){
       }else{
         down_value = 0;
       }
-        down_button[1] = down_value;
-        CAN0.sendMsgBuf(ID, 0, 3, down_button);
+        data_value[1] = down_value;
     }     
 }
 
-void Left(){
+void Left(unsigned char* data_value){
   static int before_left = 0;
   int left_value = 0;
-  
-  unsigned char left_button[3] = {left_ch,left_value,SHARP};   
   
     if (before_left != PS3.getAnalogButton(LEFT)) {
       before_left = PS3.getAnalogButton(LEFT);
@@ -197,16 +177,13 @@ void Left(){
       }else{
         left_value = 0;
       }
-        left_button[1] = left_value;     
-        CAN0.sendMsgBuf(ID, 0, 3, left_button);
+        data_value[1] = left_value;     
     }
 }
 
-void Triangle(){
+void Triangle(unsigned char* data_value){
   static int before_triangle = 0;
   int triangle_value = 0;
-  
-  unsigned char triangle_button[3] = {triangle_ch,triangle_value,SHARP};   
   
     if (before_triangle != PS3.getAnalogButton(TRIANGLE)){
       before_triangle = PS3.getAnalogButton(TRIANGLE);
@@ -215,35 +192,28 @@ void Triangle(){
       }else{
         triangle_value = 0;
       }
-        triangle_button[1] = triangle_value;    
-        CAN0.sendMsgBuf(ID, 0, 3, triangle_button);
+        data_value[1] = triangle_value;    
     }
 }
 
-void Circle(){
+void Circle(unsigned char* data_value){
   static int before_circle = 0;
   int circle_value = 0;
   
-  unsigned char circle_button[3] = {circle_ch,circle_value,SHARP};   
-  
-  if(rxBuf[i] == circle_ch){
-    if(before_circle != PS3.getAnalogButton(CIRCLE)){
+    if (before_circle != PS3.getAnalogButton(CIRCLE)){
       before_circle = PS3.getAnalogButton(CIRCLE);
       if(PS3.getAnalogButton(CIRCLE) > 0){
         circle_value = PS3.getAnalogButton(CIRCLE);
       }else{
         circle_value = 0;
       }
-        circle_button[1] = circle_value;
-        pointer(circle_value);     
+        data_value[1] = circle_value;     
     }
-  }
 }
-void Cross(){
+
+void Cross(unsigned char* data_value){
   static int before_cross = 0;
   int cross_value = 0;
-  
-  unsigned char cross_button[3] = {cross_ch,cross_value,SHARP};   
   
     if (before_cross != PS3.getAnalogButton(CROSS)){
       before_cross = PS3.getAnalogButton(CROSS);
@@ -252,16 +222,13 @@ void Cross(){
       }else{
         cross_value = 0;
       }
-        cross_button[1] = cross_value;     
-        CAN0.sendMsgBuf(ID, 0, 3, cross_button);              
+        data_value[1] = cross_value;     
     }
 }
 
-void Square(){
+void Square(unsigned char* data_value){
   static int before_square = 0;
   int square_value = 0;
-
-  unsigned char square_button[3] = {square_ch,square_value,SHARP};   
   
     if (before_square != PS3.getAnalogButton(SQUARE)){
       before_square = PS3.getAnalogButton(SQUARE);
@@ -270,17 +237,14 @@ void Square(){
       }else{
         square_value = 0;
       }
-        square_button[1] = square_value;     
-        CAN0.sendMsgBuf(ID, 0, 3, square_button);              
+        data_value[1] = square_value;     
     }
 }
 
 //L1,R1
-void Left1(){
+void Left1(unsigned char* data_value){
   static int before_l1 = 0;  
   int l1_value = 0;
-  
-  unsigned char l1_button[3] = {l1_ch,l1_value,SHARP};   
   
     if (before_l1 != PS3.getAnalogButton(L1)) {
       before_l1 = PS3.getAnalogButton(L1);
@@ -289,16 +253,13 @@ void Left1(){
       }else{
         l1_value = 0;
       }
-        l1_button[1] = l1_value;     
-        CAN0.sendMsgBuf(ID, 0, 3, l1_button);              
+        data_value[1] = l1_value;     
     }    
 }
 
-void Right1(){
+void Right1(unsigned char* data_value){
   static int before_r1 = 0;
   int r1_value = 0;
-
-  unsigned char r1_button[3] = {r1_ch,r1_value,SHARP};   
 
     if (before_r1 != PS3.getAnalogButton(R1)) {
       before_r1 = PS3.getAnalogButton(R1);
@@ -307,17 +268,14 @@ void Right1(){
       }else{
         r1_value = 0;
       }   
-        r1_button[1] = r1_value;
-        CAN0.sendMsgBuf(ID, 0, 3, r1_button);
+        data_value[1] = r1_value;
     }
 }
 
 //L2,R2
-void Left2(){
+void Left2(unsigned char* data_value){
   static int before_l2 = 0;
   int l2_value = 0;
-  
-  unsigned char l2_button[3] = {l2_ch,l2_value,SHARP};   
   
     if (before_l2 != PS3.getAnalogButton(L2)) {
      before_l2 = PS3.getAnalogButton(L2);
@@ -326,16 +284,13 @@ void Left2(){
      }else{
        l2_value = 0;
      }
-       l2_button[1] = l2_value;
-       CAN0.sendMsgBuf(ID, 0, 3, l2_button);
+       data_value[1] = l2_value;
     }
 }
 
-void Right2(){
+void Right2(unsigned char* data_value){
   static int before_r2 = 0;  
   int r2_value = 0;
-  
-  unsigned char r2_button[3] = {r2_ch,r2_value,SHARP};   
   
     if (before_r2 != PS3.getAnalogButton(R2)) {
      before_r2 = PS3.getAnalogButton(R2);
@@ -344,16 +299,13 @@ void Right2(){
      }else{
        r2_value = 0;
      }
-       r2_button[1] = r2_value;
-       CAN0.sendMsgBuf(ID, 0, 3, r2_button);              
+       data_value[1] = r2_value;
     } 
 }
 
-void Select(){
+void Select(unsigned char* data_value){
   static int before_select = 0;
   int select_value = 0;
-  
-  unsigned char select_button[3] = {select_ch,select_value,SHARP};   
   
     if (before_select != PS3.getButtonPress(SELECT)) {
       before_select = PS3.getButtonPress(SELECT);
@@ -362,17 +314,14 @@ void Select(){
       }else{
         select_value = 0;
       }
-        select_button[1] = select_value;     
-        CAN0.sendMsgBuf(ID, 0, 3, select_button);
+        data_value[1] = select_value;     
     }
 }
 
-void Start(){
+void Start(unsigned char* data_value){
   static int before_start = 0;
   int start_value = 0;
-  
-  unsigned char start_button[3] = {start_ch,start_value,SHARP};   
-  
+    
     if (before_start != PS3.getButtonPress(START)) {
       before_start = PS3.getButtonPress(START);
       if(PS3.getButtonPress(START)){
@@ -380,8 +329,7 @@ void Start(){
       }else{
         start_value = 0;
       }
-        start_button[1] = start_value;
-        CAN0.sendMsgBuf(ID, 0, 3, start_button);
+        data_value[1] = start_value;
     }
 }
 
@@ -407,31 +355,6 @@ void roll(){
   CAN0.sendMsgBuf(ID, 0, 3, roll_angle);  
 }
 
-void recieve(){
-    if(!digitalRead(2))                         // If pin 2 is low, read receive buffer
-    {
-      CAN0.readMsgBuf(&len, rxBuf);              // Read data: len = data length, buf = data byte(s)
-      rxId = CAN0.getCanId();                    // Get message ID
-      Serial.print("ID: ");
-      Serial.print(rxId, HEX);
-      Serial.print("  Data: ");4
-      for(int i = 0; i<len; i++)                // Print each byte of the data
-      {
-        if(rxBuf[i] < 0x10)                     // If data byte is less than 0x10, add a leading zero
-        {
-          Serial.print("0");
-        }
-        Serial.print(rxBuf[i], HEX);
-        Serial.print(" ");
-      }
-      Serial.println();
-    }
-}
-
-void pointer(char* a){
-  a[0] = 0x00;
-}
-
 void setup() {
   Serial.begin(115200);
 
@@ -447,59 +370,73 @@ void setup() {
   }else {
       Serial.print("Can init fail!!\r\n");
   }
-  pinMode(2, INPUT);                            // Setting pin 2 for /INT input  
-
+  pinMode(2, INPUT);                            // Setting pin 2 for /INT input
 //  CAN0.init_Filt(0,0,0x0111);
 //  CAN0.init_Filt(2,0,0x0112);
 
-//  MsTimer2::set(10, all_button); // 500ms period
-//  MsTimer2::start();
   digitalWrite(13,LOW);
 }
 
 void loop() {
   Usb.Task();
-  recieve();
   
   int x = 0;
   int y = 0;
+
+  unsigned char data_value[3] = {0};
+  unsigned char send_data[8] = {0};
   
-  unsigned char send_value[8][2] = {0}; 
+  data_value[2] = SHARP;
   
-     
-    if(y == 1){
-      CAN0.sendMsgBuf(ID, 0, 8, send_value);
-    }
-    
   if (PS3.PS3Connected) {
-    for(x = 0; x++; x = 7){
-          Left_x();
-          Left_y();
-          Right_x();
-          Right_y();
-          Up();
-          Right();
-          Down();
-          Left();
-          Triangle();
-          Circle();
-          Cross();
-          Square();
-          Left1();
-          Right1();
-          Left2();
-          Right2();
-          Select();
-          Start();
-      //    pitch();
-      //    roll();
+    if(!digitalRead(2))                         // If pin 2 is low, read receive buffer
+    {
+      CAN0.readMsgBuf(&len, rxBuf);              // Read data: len = data length, buf = data byte(s)
+      rxId = CAN0.getCanId();                    // Get message ID
+      Serial.print("ID: ");
+      Serial.print(rxId, HEX);
+      Serial.print("  Data: ");
+      for(int i = 0; i<len; i++)                // Print each byte of the data
+      {
+        switch (rxBuf[i]){
+                case start_ch:     Start(data_value);     data_value[0] = start_ch;     break; 
+        	case select_ch:    Select(data_value);    data_value[0] = select_ch;    break;
+        	case left_x_ch:    Left_x(data_value);    data_value[0] = left_x_ch;    break;
+        	case left_y_ch:    Left_y(data_value);    data_value[0] = left_y_ch;    break;
+        	case right_x_ch:   Right_x(data_value);   data_value[0] = right_x_ch;   break;
+        	case right_y_ch:   Right_y(data_value);   data_value[0] = right_y_ch;   break;
+        	case l1_ch:        Left1(data_value);     data_value[0] = l1_ch;        break;
+                case l2_ch:        Left2(data_value);     data_value[0] = l2_ch;        break;
+        	case r1_ch:        Right1(data_value);    data_value[0] = r1_ch;        break;
+                case r2_ch:        Right2(data_value);    data_value[0] = r2_ch;        break;
+        	case triangle_ch:  Triangle(data_value);  data_value[0] = triangle_ch;  break;
+        	case circle_ch:    Circle(data_value);    data_value[0] = circle_ch;    break;
+        	case cross_ch:     Cross(data_value);     data_value[0] = cross_ch;     break;
+        	case square_ch:    Square(data_value);    data_value[0] = square_ch;    break;
+        	case up_ch:        Up(data_value);        data_value[0] = up_ch;        break;
+        	case down_ch:      Down(data_value);      data_value[0] = down_ch;      break;
+        	case right_ch:     Right(data_value);     data_value[0] = right_ch;     break;
+        	case left_ch:      Left(data_value);      data_value[0] = left_ch;      break;        
+        }
+//              pitch();
+//              roll();
+        for(x=0; x>=2; x++){
+          send_data[y] = data_value[x];
+          y++;
+          if(y >= 7){
+            y = 0;
+            CAN0.sendMsgBuf(ID, 0, 8, send_data);
+          }
+        }
+        
+      }
+    if (PS3.getButtonPress(PS)) {
+        PS3.disconnect();
+        PS3.setLedOff();
     }
-  if (PS3.getButtonPress(PS)) {
-      PS3.disconnect();
-      PS3.setLedOff();
-  }
     digitalWrite(13,HIGH);
   }else {
     digitalWrite(13,LOW);
+  }
   }
 }
