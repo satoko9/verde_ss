@@ -25,9 +25,12 @@ boolean printAngle;
 
 MCP_CAN CAN0(4);                            // Set CS 
 
+long unsigned int rxId;
+unsigned char len = 0;
+unsigned char rxBuf[8];
+
 int x = 0;
 int y = 0;
-int i = 0;
 int point = 0;
 unsigned char store_data[8][3] = {0};
 unsigned char send_data[8] = {0};
@@ -370,6 +373,8 @@ void setup() {
       Serial.print("Can init fail!!\r\n");
   }
 
+  pinMode(2, INPUT);                            // Setting pin 2 for /INT input
+
   CAN0.init_Filt(0,0,0x0111);
   CAN0.init_Filt(2,0,0x0112);
 
@@ -379,29 +384,40 @@ void setup() {
 void loop() {
   Usb.Task();
   if (PS3.PS3Connected) {
-    Start();
-    Select();
-    Left_x();
-    Left_y();
-    Right_x();
-    Right_y();
-    Left1();
-    Left2();
-    Right1();
-    Right2();
-    Triangle();
-    Circle();
-    Cross();
-    Square();
-    Up();
-    Down();
-    Right();
-    Left();
-//    pitch();
-//    roll();
-
+    if(!digitalRead(2))                         // If pin 2 is low, read receive buffer
+    {
+      CAN0.readMsgBuf(&len, rxBuf);              // Read data: len = data length, buf = data byte(s)
+      rxId = CAN0.getCanId();                    // Get message ID
+      Serial.print("ID: ");
+      Serial.print(rxId, HEX);
+      for(int i = 0; i<len; i++)                // Print each byte of the data
+      {
+        switch (rxBuf[i]){
+          case start_ch:     Start();     break;
+          case select_ch:    Select();    break;
+          case left_x_ch:    Left_x();    break;
+          case left_y_ch:    Left_y();    break;
+          case right_x_ch:   Right_x();   break;
+          case right_y_ch:   Right_y();   break;
+          case l1_ch:        Left1();     break;
+          case l2_ch:        Left2();     break;
+          case r1_ch:        Right1();    break;
+          case r2_ch:        Right2();    break;
+          case triangle_ch:  Triangle();  break;
+          case circle_ch:    Circle();    break;
+          case cross_ch:     Cross();     break;
+          case square_ch:    Square();    break;
+          case up_ch:        Up();        break;
+          case down_ch:      Down();      break;
+          case right_ch:     Right();     break;
+          case left_ch:      Left();      break;
+          //case pitch_ch:     pitch();     break;
+          //case roll_ch:      roll();      break;
+        }
+      }
+    }
   if(point == 1){
-    for(i = 0; i <= y; i++){
+    for(int j = 0; j <= y; j++){
       for(x = 0; x < 8; x++){
         send_data[x] = store_data[x][y];
       }
