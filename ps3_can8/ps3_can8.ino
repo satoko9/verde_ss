@@ -9,7 +9,7 @@
 #include <spi4teensy3.h>
 #endif
 
-#define SHARP '#'
+//#define SHARP '#'
 #define ID 0x003
 
 USB Usb;
@@ -71,7 +71,7 @@ void Start(){
     
     now_start = PS3.getButtonPress(START);
     
-    if (before_start != now_start) {    //PS3.getButtonPress(START)変数宣言
+    if (before_start != now_start) {
       before_start = now_start;
       if(now_start > 0){
         start_value = 1;
