@@ -57,10 +57,11 @@ enum {
         CError
 }Mnemonic;
 
-void Send_data(unsigned char data_value){
-  point = 1;
-    store_data[x][y] = data_value;
-    x++;
+void Send_data(unsigned char* data_value){
+    point = 1;    
+    for(int u = 0; u < 2; u++){
+      store_data[u][y] = data_value[u];
+    }
     if(x >= 7){
       x = 0;
       y++;
@@ -69,14 +70,14 @@ void Send_data(unsigned char data_value){
 
 void Start(){
   static unsigned char before_start = 0;
-  unsigned char start_value = 0;
+  unsigned char start_value[2] = {start_ch,0};
     
-    start_value = PS3.getButtonPress(START);
+    start_value[1] = PS3.getButtonPress(START);
     
-    if (before_start != start_value) {
-      before_start = start_value;
-      if(start_value <= 0){
-        start_value = 0;
+    if (before_start != start_value[1]) {
+      before_start = start_value[1];
+      if(start_value[1] <= 0){
+        start_value[1] = 0;
       }
         Send_data(start_value);
     }
@@ -84,14 +85,14 @@ void Start(){
 
 void Select(){
   static unsigned char before_select = 0;
-  unsigned char select_value = 0;
+  unsigned char select_value[2] = {select_ch,0};
   
-    select_value = PS3.getButtonPress(SELECT);
+    select_value[1] = PS3.getButtonPress(SELECT);
     
-    if (before_select != select_value) {
-      before_select = select_value;
-      if(select_value <= 0){  
-        select_value = 0;
+    if (before_select != select_value[1]) {
+      before_select = select_value[1];
+      if(select_value[1] <= 0){  
+        select_value[1] = 0;
       }
         Send_data(select_value);
     }
@@ -100,14 +101,14 @@ void Select(){
 //左スティックx
 void Left_x(){
     static unsigned char before_left_x = 0;
-    unsigned char left_x_value = 0;
+    unsigned char left_x_value[2] = {left_x_ch,0};
     
-    left_x_value = PS3.getAnalogHat(LeftHatX);
+    left_x_value[1] = PS3.getAnalogHat(LeftHatX);
     
-    if (before_left_x != left_x_value) {
-      before_left_x = left_x_value;
-      if (left_x_value <= 0){
-        left_x_value = 0;
+    if (before_left_x != left_x_value[1]) {
+      before_left_x = left_x_value[1];
+      if (left_x_value[1] <= 0){
+        left_x_value[1] = 0;
       }
         Send_data(left_x_value);
     }    
@@ -116,14 +117,14 @@ void Left_x(){
 //左スティックy
 void Left_y(){
     static unsigned char before_left_y = 0;
-    unsigned char left_y_value = 0;
+    unsigned char left_y_value[2] = {left_y_ch,0};
     
-    left_y_value = PS3.getAnalogHat(LeftHatY);
+    left_y_value[1] = PS3.getAnalogHat(LeftHatY);
     
-    if(before_left_y != left_y_value) {
-      before_left_y = left_y_value;
-      if(left_y_value <= 0){
-        left_y_value = 0;
+    if(before_left_y != left_y_value[1]) {
+      before_left_y = left_y_value[1];
+      if(left_y_value[1] <= 0){
+        left_y_value[1] = 0;
       }
         Send_data(left_y_value);
     }    
@@ -132,14 +133,14 @@ void Left_y(){
 //右スティックx
 void Right_x(){
     static unsigned char before_right_x = 0;
-    unsigned char right_x_value = 0;
+    unsigned char right_x_value[2] = {right_x_ch,0};
   
-    right_x_value = PS3.getAnalogHat(RightHatX);
+    right_x_value[1] = PS3.getAnalogHat(RightHatX);
     
-    if (before_right_x != right_x_value) {
-      before_right_x = right_x_value;
-      if(right_x_value <= 0){
-        right_x_value = 0;
+    if (before_right_x != right_x_value[1]) {
+      before_right_x = right_x_value[1];
+      if(right_x_value[1] <= 0){
+        right_x_value[1] = 0;
       }
         Send_data(right_x_value);
     }
@@ -148,14 +149,14 @@ void Right_x(){
 //右スティックy
 void Right_y(){
     static unsigned char before_right_y = 0;
-    unsigned char right_y_value = 0;
+    unsigned char right_y_value[2] = {right_y_ch,0};
     
-    right_y_value = PS3.getAnalogHat(RightHatY);
+    right_y_value[1] = PS3.getAnalogHat(RightHatY);
     
-    if(before_right_y != right_y_value){
-      before_right_y = right_y_value;
-      if(right_y_value <= 0){
-        right_y_value = 0;
+    if(before_right_y != right_y_value[1]){
+      before_right_y = right_y_value[1];
+      if(right_y_value[1] <= 0){
+        right_y_value[1] = 0;
       }
         Send_data(right_y_value);
     }
@@ -163,14 +164,14 @@ void Right_y(){
 
 void Left1(){
   static unsigned char before_l1 = 0;
-  unsigned char l1_value = 0;
+  unsigned char l1_value[2] = {l1_ch,0};
   
-    l1_value = PS3.getAnalogButton(L1);
+    l1_value[1] = PS3.getAnalogButton(L1);
     
-    if (before_l1 != l1_value) {
-      before_l1 = l1_value;
-      if(l1_value <= 0){
-        l1_value = 0;
+    if (before_l1 != l1_value[1]) {
+      before_l1 = l1_value[1];
+      if(l1_value[1] <= 0){
+        l1_value[1] = 0;
       }
         Send_data(l1_value);
     }    
@@ -178,14 +179,14 @@ void Left1(){
 
 void Left2(){
   static unsigned char before_l2 = 0;
-  unsigned char l2_value = 0;
+  unsigned char l2_value[2] = {l2_ch,0};
   
-    l2_value = PS3.getAnalogButton(L2);
+    l2_value[1] = PS3.getAnalogButton(L2);
     
-    if (before_l2 != l2_value) {
-     before_l2 = l2_value;
-     if (l2_value <= 0){
-       l2_value = 0;
+    if (before_l2 != l2_value[1]) {
+     before_l2 = l2_value[1];
+     if (l2_value[1] <= 0){
+       l2_value[1] = 0;
      }
         Send_data(l2_value);
     }
@@ -193,14 +194,14 @@ void Left2(){
 
 void Right1(){
   static unsigned char before_r1 = 0;
-  unsigned char r1_value = 0;
+  unsigned char r1_value[2] = {r1_ch,0};
 
-    r1_value = PS3.getAnalogButton(R1);
+    r1_value[1] = PS3.getAnalogButton(R1);
     
-    if (before_r1 != r1_value) {
-      before_r1 = r1_value;
-      if(r1_value <= 0){
-        r1_value = 0;
+    if (before_r1 != r1_value[1]) {
+      before_r1 = r1_value[1];
+      if(r1_value[1] <= 0){
+        r1_value[1] = 0;
       }   
         Send_data(r1_value);
     }
@@ -208,14 +209,14 @@ void Right1(){
 
 void Right2(){
   static unsigned char before_r2 = 0;
-  unsigned char r2_value = 0;
+  unsigned char r2_value[2] = {r2_ch,0};
   
-    r2_value = PS3.getAnalogButton(R2);
+    r2_value[1] = PS3.getAnalogButton(R2);
     
-    if (before_r2 != r2_value) {
-     before_r2 = r2_value;
-     if (r2_value <= 0){
-       r2_value = 0;
+    if (before_r2 != r2_value[1]) {
+     before_r2 = r2_value[1];
+     if (r2_value[1] <= 0){
+       r2_value[1] = 0;
      }
         Send_data(r2_value);
     } 
@@ -223,14 +224,14 @@ void Right2(){
 
 void Triangle(){
   static unsigned char before_triangle = 0;
-  unsigned char triangle_value = 0;
+  unsigned char triangle_value[2] = {triangle_ch,0};
   
-    triangle_value = PS3.getAnalogButton(TRIANGLE);
+    triangle_value[1] = PS3.getAnalogButton(TRIANGLE);
 
-    if (before_triangle != triangle_value){
-      before_triangle = triangle_value;
-      if(triangle_value <= 0){
-        triangle_value = 0;
+    if (before_triangle != triangle_value[1]){
+      before_triangle = triangle_value[1];
+      if(triangle_value[1] <= 0){
+        triangle_value[1] = 0;
       }
         Send_data(triangle_value);
     }
@@ -238,14 +239,14 @@ void Triangle(){
 
 void Circle(){
   static unsigned char before_circle = 0;
-  unsigned char circle_value = 0;
+  unsigned char circle_value[2] = {circle_ch,0};
   
-    circle_value = PS3.getAnalogButton(CIRCLE);
+    circle_value[1] = PS3.getAnalogButton(CIRCLE);
     
-    if (before_circle != circle_value){
-      before_circle = circle_value;
-      if(circle_value <= 0){
-        circle_value = 0;
+    if (before_circle != circle_value[1]){
+      before_circle = circle_value[1];
+      if(circle_value[1] <= 0){
+        circle_value[1] = 0;
       }
         Send_data(circle_value);
     }
@@ -253,14 +254,14 @@ void Circle(){
 
 void Cross(){
   static unsigned char before_cross = 0;
-  unsigned char cross_value = 0;
+  unsigned char cross_value[2] = {cross_ch,0};
   
-    cross_value = PS3.getAnalogButton(CROSS);
+    cross_value[1] = PS3.getAnalogButton(CROSS);
     
-    if (before_cross != cross_value){
-      before_cross = cross_value;
-      if(cross_value <= 0){
-        cross_value = 0;
+    if (before_cross != cross_value[1]){
+      before_cross = cross_value[1];
+      if(cross_value[1] <= 0){
+        cross_value[1] = 0;
       }
         Send_data(cross_value);
     }
@@ -268,14 +269,14 @@ void Cross(){
 
 void Square(){
   static unsigned char before_square = 0;
-  unsigned char square_value = 0;
+  unsigned char square_value[2] = {square_ch,0};
   
-    square_value = PS3.getAnalogButton(SQUARE);
+    square_value[1] = PS3.getAnalogButton(SQUARE);
     
-    if (before_square != square_value){
-      before_square = square_value;
-      if(square_value <= 0){
-        square_value = 0;
+    if (before_square != square_value[1]){
+      before_square = square_value[1];
+      if(square_value[1] <= 0){
+        square_value[1] = 0;
       }
         Send_data(square_value);
     }
@@ -283,14 +284,14 @@ void Square(){
 
 void Up(){
   static unsigned char before_up = 0;
-  unsigned char up_value = 0;
+  unsigned char up_value[2] = {up_ch,0};
   
-    up_value = PS3.getAnalogButton(UP);
+    up_value[1] = PS3.getAnalogButton(UP);
     
-    if (before_up != up_value) {
-      before_up = up_value;
-      if(up_value <= 0){
-        up_value = 0;
+    if (before_up != up_value[1]) {
+      before_up = up_value[1];
+      if(up_value[1] <= 0){
+        up_value[1] = 0;
       }
         Send_data(up_value);
     }
@@ -298,14 +299,14 @@ void Up(){
 
 void Down(){
   static unsigned char before_down = 0;
-  unsigned char down_value = 0;
+  unsigned char down_value[2] = {down_ch,0};
   
-    down_value = PS3.getAnalogButton(DOWN);
+    down_value[1] = PS3.getAnalogButton(DOWN);
     
-    if (before_down != down_value) {
-      before_down = down_value;
-      if(down_value <= 0){
-        down_value = 0;
+    if (before_down != down_value[1]) {
+      before_down = down_value[1];
+      if(down_value[1] <= 0){
+        down_value[1] = 0;
       }
         Send_data(down_value);
     }     
@@ -313,14 +314,14 @@ void Down(){
 
 void Right(){
   static unsigned char before_right = 0;
-  unsigned char right_value = 0;
+  unsigned char right_value[2] = {right_ch,0};
   
-    right_value = PS3.getAnalogButton(RIGHT);
+    right_value[1] = PS3.getAnalogButton(RIGHT);
     
-    if (before_right != right_value) {
-      before_right = right_value;
-      if(right_value <= 0){
-        right_value = 0;
+    if (before_right != right_value[1]) {
+      before_right = right_value[1];
+      if(right_value[1] <= 0){
+        right_value[1] = 0;
       }
         Send_data(right_value);
     }
@@ -328,14 +329,14 @@ void Right(){
 
 void Left(){
   static unsigned char before_left = 0;
-  unsigned char left_value = 0;
+  unsigned char left_value[2] = {left_ch,0};
   
-    left_value = PS3.getAnalogButton(LEFT);
+    left_value[1] = PS3.getAnalogButton(LEFT);
     
-    if (before_left != left_value) {
-      before_left = left_value;
-      if(left_value <= 0){
-        left_value = 0;
+    if (before_left != left_value[1]) {
+      before_left = left_value[1];
+      if(left_value[1] <= 0){
+        left_value[1] = 0;
       }
         Send_data(left_value);
     }
@@ -343,35 +344,35 @@ void Left(){
 
 void pitch(){
   static unsigned char before_pitch = 0;
-  unsigned char pitch_value = 0;
+  unsigned char pitch_value[2] = {pitch_ch,0};
   
-  pitch_value = PS3.getAngle(Pitch);
+  pitch_value[1] = PS3.getAngle(Pitch);
     
-    if (before_pitch != pitch_value) {
-      before_pitch = pitch_value;
+    if (before_pitch != pitch_value[1]) {
+      before_pitch = pitch_value[1];
       Send_data(pitch_value);
     }
 }
 
 void roll(){
   static unsigned char before_roll = 0;
-  unsigned char roll_value = 0;
+  unsigned char roll_value[2] = {roll_ch,0};
   
-  roll_value = PS3.getAngle(Roll);     
+  roll_value[1] = PS3.getAngle(Roll);     
     
-    if (before_roll != roll_value) {
-      before_roll = roll_value;
+    if (before_roll != roll_value[1]) {
+      before_roll = roll_value[1];
       Send_data(roll_value);
     }
 }
 
-void get_error(){
+/*void get_error(){
 
   if(CAN0.checkError() == CAN_CTRLERROR){
     Send_data(CError);
   }
 
-}
+}*/
 
 void setup() {
   Serial.begin(115200);
@@ -400,7 +401,25 @@ void setup() {
 void loop() {
   Usb.Task();
   if (PS3.PS3Connected) {
-    if(!digitalRead(2))                         // If pin 2 is low, read receive buffer
+    Start();
+    Select();
+    Left_x();
+    Left_y();
+    Right_x();
+    Right_y();
+    Left1();
+    Left2();
+    Right1();
+    Right2();
+    Triangle();
+    Circle();
+    Cross();
+    Square();
+    Up();
+    Down();
+    Right();
+    Left();
+/*    if(!digitalRead(2))                         // If pin 2 is low, read receive buffer
     {
       CAN0.readMsgBuf(&len, rxBuf);              // Read data: len = data length, buf = data byte(s)
       rxId = CAN0.getCanId();                    // Get message ID
@@ -432,11 +451,17 @@ void loop() {
           //case CError:       get_error();  break;
         }
       }
-    }
+    }*/
   if(point == 1){
     for(int j = 0; j <= y; j++){
-      for(x = 0; x < 8; x++){
-        send_data[x] = store_data[x][y];
+      if(j < y){
+        for(int s = 0; s < 8; s++){
+          send_data[s] = store_data[s][j];
+        }
+      }else if(j >= y){
+        for(int s = 0; s <= x; s++){
+          send_data[s] = store_data[s][j];
+        }
       }
       CAN0.sendMsgBuf(ID, 0, 8, send_data);
     }
