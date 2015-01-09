@@ -342,19 +342,35 @@ void Left(){
 }
 
 void pitch(){
+  static unsigned char before_pitch = 0;
   unsigned char pitch_value = 0;
-
+  
   pitch_value = PS3.getAngle(Pitch);
-
-  Send_data(pitch_value);
+    
+    if (before_pitch != pitch_value) {
+      before_pitch = pitch_value;
+      Send_data(pitch_value);
+    }
 }
 
 void roll(){
+  static unsigned char before_roll = 0;
   unsigned char roll_value = 0;
-
+  
   roll_value = PS3.getAngle(Roll);     
-     
-  Send_data(roll_value);
+    
+    if (before_roll != roll_value) {
+      before_roll = roll_value;
+      Send_data(roll_value);
+    }
+}
+
+void get_error(){
+
+  if(CAN0.checkError() == CAN_CTRLERROR){
+    Send_data(CError);
+  }
+
 }
 
 void setup() {
@@ -413,6 +429,7 @@ void loop() {
           case left_ch:      Left();      break;
           //case pitch_ch:     pitch();     break;
           //case roll_ch:      roll();      break;
+          //case CError:       get_error();  break;
         }
       }
     }
