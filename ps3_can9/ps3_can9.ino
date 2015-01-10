@@ -60,11 +60,12 @@ enum {
 void Send_data(unsigned char* data_value){
     point = 1;    
     for(int u = 0; u < 2; u++){
-      store_data[u][y] = data_value[u];
-    }
+      store_data[x][y] = data_value[u];
+      x++;
     if(x >= 7){
       x = 0;
       y++;
+    }
     }
 }
 
