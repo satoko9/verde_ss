@@ -32,7 +32,7 @@ unsigned char rxBuf[8];
 int x = 0;
 int y = 0;
 int point = 0;
-unsigned char store_data[8][3] = {0};
+unsigned char store_data[8][5] = {0};
 unsigned char send_data[8] = {0};
 
 enum {
@@ -459,12 +459,13 @@ void loop() {
         for(int s = 0; s < 8; s++){
           send_data[s] = store_data[s][j];
         }
+        CAN0.sendMsgBuf(ID, 0, 8, send_data);
       }else if(j >= y){
         for(int s = 0; s <= x; s++){
           send_data[s] = store_data[s][j];
         }
+        CAN0.sendMsgBuf(ID, 0, x, send_data);
       }
-      CAN0.sendMsgBuf(ID, 0, 8, send_data);
     }
     x = 0, y = 0;
   }
