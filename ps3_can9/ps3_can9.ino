@@ -168,7 +168,7 @@ void Left1(){
   unsigned char l1_value[2] = {l1_ch,0};
   
     l1_value[1] = PS3.getAnalogButton(L1);
-    
+                          
     if (before_l1 != l1_value[1]) {
       before_l1 = l1_value[1];
       if(l1_value[1] <= 0){
@@ -367,13 +367,16 @@ void roll(){
     }
 }
 
-/*void get_error(){
+void get_error(){
 
+  unsigned char error[2] = {CError,0}; 
+  
   if(CAN0.checkError() == CAN_CTRLERROR){
-    Send_data(CError);
+    error[1] = 1;
+    Send_data(error);
   }
 
-}*/
+}
 
 void setup() {
   Serial.begin(115200);
@@ -420,6 +423,9 @@ void loop() {
     Down();
     Right();
     Left();
+//    pitch();
+//    roll();
+//    get_error();
 /*    if(!digitalRead(2))                         // If pin 2 is low, read receive buffer
     {
       CAN0.readMsgBuf(&len, rxBuf);              // Read data: len = data length, buf = data byte(s)
@@ -464,7 +470,7 @@ void loop() {
         for(int s = 0; s <= x; s++){
           send_data[s] = store_data[s][j];
         }
-        CAN0.sendMsgBuf(ID, 0, x, send_data);
+        CAN0.sendMsgBuf(ID, 0, x + 1, send_data);
       }
     }
     x = 0, y = 0;
