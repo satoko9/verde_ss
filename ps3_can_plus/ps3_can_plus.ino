@@ -1,15 +1,12 @@
 #include <mcp_can.h>
-#include <mcp_can_dfs.h>
 #include <SPI.h>
 #include <PS3BT.h>
 #include <usbhub.h>
-#include <MsTimer2.h>
 // Satisfy IDE, which only needs to see the include statment in the ino.
 #ifdef dobogusinclude
 #include <spi4teensy3.h>
 #endif
 
-//#define SHARP '#'
 #define ID 0x003
 #define Serial_PC 0
 
@@ -20,9 +17,6 @@ BTD Btd(&Usb); // You have to create the Bluetooth Dongle instance like so
 /* You can create the instance of the class in two ways */
 PS3BT PS3(&Btd); // This will just create the instance
 //PS3BT PS3(&Btd, 0x00, 0x15, 0x83, 0x3D, 0x0A, 0x57); // This will also store the bluetooth address - this can be obtained from the dongle when running the sketch
-
-boolean printTemperature;
-boolean printAngle;
 
 unsigned long printTime = 0;
 
@@ -72,14 +66,11 @@ enum {
 void Send_data(unsigned char* data_value){
     flag = 1;                                 //値が格納されたらフラグを立てる
     for(int u = 0; u < 2; u++){
-      if(x >= 7){                             //x(一列)は最大8バイトなので
-        x = 0;                                //すべて埋まったらxの値をリセット
-        y++;                                  //次の行に進める
-        x++;      
-    }
       store_data[x][y] = data_value[u];       //2バイトづつ格納する
-        if(x < 7){
-          x++;                                //値を格納したら、次の配列に格納する(0～7)
+      x++;      
+      if(x >= 8){                             //x(一列)は最大8バイトなので
+        x = 0;                                //0～7まで全て埋まったらxの値をリセット
+        y++;                                  //次の行に進める
       }
     }
 }
@@ -94,11 +85,10 @@ void Send_data(unsigned char* data_value){
 void Start(){
   static unsigned char before_start = 0;
   unsigned char start_value[2] = {start_ch,0};       //{値の識別記号、読み取った値}の順で格納する
-    
-    
+        
     start_value[1] = PS3.getButtonPress(START);      //コントローラの値を読み取る
     
-    if (before_start != start_value[1] || Send_Flag == 1) {            //前回読み取った値と違ったら新しい値を送る
+    if (before_start != start_value[1] || Send_Flag == 1) {            //前回読み取った値と違うかフラグが立ったら値を送る
       before_start = start_value[1];
       if(start_value[1] <= 0){                       //ボタンを何も押していない場合、0を送信する
         start_value[1] = 0;
@@ -156,12 +146,12 @@ void Left_x(){
         left_x_value[1] = 0;
       }
         Send_data(left_x_value);
+    }
         if(Serial_PC == 1){
           Serial.print("  left_x:");
           Serial.print(left_x_value[1]);
-          Serial.print("\n");
-        }
-    }    
+          //Serial.print("\n");
+        }    
 }
 
 void Left_y(){
@@ -176,12 +166,12 @@ void Left_y(){
         left_y_value[1] = 0;
       }
         Send_data(left_y_value);
+    }    
         if(Serial_PC == 1){
           Serial.print("  left_y:");
           Serial.print(left_y_value[1]);
-          Serial.print("\n");
+          //Serial.print("\n");
         }
-    }    
 }
 
 /******************************************************************************
@@ -203,11 +193,11 @@ void Right_x(){
         right_x_value[1] = 0;
       }
         Send_data(right_x_value);
+    }
         if(Serial_PC == 1){
           Serial.print("  right_x:");
           Serial.print(right_x_value[1]);
         }
-    }
 }
 
 void Right_y(){
@@ -222,11 +212,12 @@ void Right_y(){
         right_y_value[1] = 0;
       }
         Send_data(right_y_value);
+    }
         if(Serial_PC == 1){
           Serial.print("  right_y:");
           Serial.print(right_y_value[1]);
+          Serial.print("\n");
         }
-    }
 }
 
 /******************************************************************************
@@ -599,7 +590,6 @@ void get_error(){
     error[1] = 1;
     Send_data(error);
   }
-
 }
 
 void setup() {
